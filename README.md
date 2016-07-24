@@ -3,5 +3,9 @@
 
 #UniversalPagingController
 
+Custom paging controller built from other view controllers placed inside a scroll view. Allows the user to switch between any of them with an swipe gesture.
+
+![Animation](https://github.com/pjamroz/UniversalPagingController/blob/master/Assets/animation.gif)
+
 ##License
 `UniversalPagingController` is under `MIT license`. See `LICENSE` file for more info.
