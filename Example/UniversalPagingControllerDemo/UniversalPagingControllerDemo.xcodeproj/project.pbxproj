@@ -8,20 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		68DDFB151D44F79000A95EB5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DDFB141D44F79000A95EB5 /* AppDelegate.swift */; };
-		68DDFB171D44F79000A95EB5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DDFB161D44F79000A95EB5 /* ViewController.swift */; };
-		68DDFB1A1D44F79000A95EB5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68DDFB181D44F79000A95EB5 /* Main.storyboard */; };
 		68DDFB1C1D44F79000A95EB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68DDFB1B1D44F79000A95EB5 /* Assets.xcassets */; };
 		68DDFB1F1D44F79000A95EB5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68DDFB1D1D44F79000A95EB5 /* LaunchScreen.storyboard */; };
+		68DDFB271D45010A00A95EB5 /* UniversalPagingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DDFB261D45010A00A95EB5 /* UniversalPagingController.swift */; };
+		68DDFB291D45030600A95EB5 /* UniversalPagingController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68DDFB281D45030600A95EB5 /* UniversalPagingController.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		68DDFB111D44F79000A95EB5 /* UniversalPagingControllerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UniversalPagingControllerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68DDFB141D44F79000A95EB5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		68DDFB161D44F79000A95EB5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		68DDFB191D44F79000A95EB5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		68DDFB1B1D44F79000A95EB5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		68DDFB1E1D44F79000A95EB5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		68DDFB201D44F79000A95EB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		68DDFB261D45010A00A95EB5 /* UniversalPagingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalPagingController.swift; sourceTree = "<group>"; };
+		68DDFB281D45030600A95EB5 /* UniversalPagingController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UniversalPagingController.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,8 +55,8 @@
 			isa = PBXGroup;
 			children = (
 				68DDFB141D44F79000A95EB5 /* AppDelegate.swift */,
-				68DDFB161D44F79000A95EB5 /* ViewController.swift */,
-				68DDFB181D44F79000A95EB5 /* Main.storyboard */,
+				68DDFB261D45010A00A95EB5 /* UniversalPagingController.swift */,
+				68DDFB281D45030600A95EB5 /* UniversalPagingController.storyboard */,
 				68DDFB1B1D44F79000A95EB5 /* Assets.xcassets */,
 				68DDFB1D1D44F79000A95EB5 /* LaunchScreen.storyboard */,
 				68DDFB201D44F79000A95EB5 /* Info.plist */,
@@ -124,7 +124,7 @@
 			files = (
 				68DDFB1F1D44F79000A95EB5 /* LaunchScreen.storyboard in Resources */,
 				68DDFB1C1D44F79000A95EB5 /* Assets.xcassets in Resources */,
-				68DDFB1A1D44F79000A95EB5 /* Main.storyboard in Resources */,
+				68DDFB291D45030600A95EB5 /* UniversalPagingController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,22 +135,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				68DDFB171D44F79000A95EB5 /* ViewController.swift in Sources */,
 				68DDFB151D44F79000A95EB5 /* AppDelegate.swift in Sources */,
+				68DDFB271D45010A00A95EB5 /* UniversalPagingController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		68DDFB181D44F79000A95EB5 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				68DDFB191D44F79000A95EB5 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		68DDFB1D1D44F79000A95EB5 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -290,6 +282,7 @@
 				68DDFB251D44F79000A95EB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -16,6 +16,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        
+        // Create 3 sample view controllers
+        let redViewController = UIViewController()
+        redViewController.view.backgroundColor = UIColor.redColor()
+        let blueViewController = UIViewController()
+        blueViewController.view.backgroundColor = UIColor.blueColor()
+        let greenViewController = UIViewController()
+        greenViewController.view.backgroundColor = UIColor.greenColor()
+        
+        // Create universal paging controller with sample view controllers
+        let pagingViewController = UniversalPagingController.createWithViewControllers([redViewController, blueViewController, greenViewController])
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let window = appDelegate.window
+        
+        
+        // Check if controller was created
+        if pagingViewController != nil {
+            window?.rootViewController = pagingViewController
+        }
+        
+        self.window?.makeKeyAndVisible()
+        
         return true
     }
 
@@ -40,7 +65,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 
