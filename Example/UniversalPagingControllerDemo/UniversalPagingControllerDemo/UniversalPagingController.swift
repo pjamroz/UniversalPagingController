@@ -50,9 +50,33 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
         setupAppearance()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        viewControllers[visibleViewControllerIndex].beginAppearanceTransition(true, animated: true)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        viewControllers[visibleViewControllerIndex].endAppearanceTransition()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewControllers[visibleViewControllerIndex].beginAppearanceTransition(true, animated: true)
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewControllers[visibleViewControllerIndex].endAppearanceTransition()
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func shouldAutomaticallyForwardAppearanceMethods() -> Bool {
+        return false
     }
     
     // MARK: - Orientation change
@@ -75,17 +99,29 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
     func userSwipedFromEdge(sender: UIScreenEdgePanGestureRecognizer) {
         if sender.edges == UIRectEdge.Left && sender.state == .Ended {
             if visibleViewControllerIndex > 0 {
-                visibleViewControllerIndex -= 1
-                viewControllers[visibleViewControllerIndex].beginAppearanceTransition(true, animated: true)
-                scrollView.setContentOffset(CGPoint(x: containerView.frame.size.width * CGFloat(visibleViewControllerIndex), y: 0), animated: true)
-                viewControllers[visibleViewControllerIndex].endAppearanceTransition()
+                let visibleViewControllerIndexBeforeTransition = visibleViewControllerIndex
+                let visibleViewControllerIndexAfterTransition = visibleViewControllerIndex - 1
+                viewControllers[visibleViewControllerIndexBeforeTransition].beginAppearanceTransition(false, animated: true)
+                viewControllers[visibleViewControllerIndexAfterTransition].beginAppearanceTransition(true, animated: true)
+                scrollView.setContentOffset(CGPoint(x: containerView.frame.size.width * CGFloat(visibleViewControllerIndexAfterTransition), y: 0), animated: true)
+                viewControllers[visibleViewControllerIndexAfterTransition].endAppearanceTransition()
+                viewControllers[visibleViewControllerIndexBeforeTransition].endAppearanceTransition()
+                visibleViewControllerIndex = visibleViewControllerIndexAfterTransition
+            } else {
+                shake()
             }
         } else if sender.edges == UIRectEdge.Right && sender.state == .Ended {
             if visibleViewControllerIndex+1 < viewControllers.count {
-                visibleViewControllerIndex += 1
-                viewControllers[visibleViewControllerIndex].beginAppearanceTransition(true, animated: true)
-                scrollView.setContentOffset(CGPoint(x: containerView.frame.size.width * CGFloat(visibleViewControllerIndex), y: 0), animated: true)
-                viewControllers[visibleViewControllerIndex].endAppearanceTransition()
+                let visibleViewControllerIndexBeforeTransition = visibleViewControllerIndex
+                let visibleViewControllerIndexAfterTransition = visibleViewControllerIndex + 1
+                viewControllers[visibleViewControllerIndexBeforeTransition].beginAppearanceTransition(false, animated: true)
+                viewControllers[visibleViewControllerIndexAfterTransition].beginAppearanceTransition(true, animated: true)
+                scrollView.setContentOffset(CGPoint(x: containerView.frame.size.width * CGFloat(visibleViewControllerIndexAfterTransition), y: 0), animated: true)
+                viewControllers[visibleViewControllerIndexAfterTransition].endAppearanceTransition()
+                viewControllers[visibleViewControllerIndexBeforeTransition].endAppearanceTransition()
+                visibleViewControllerIndex = visibleViewControllerIndexAfterTransition
+            } else {
+                shake()
             }
         }
     }
@@ -184,6 +220,16 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
                 trailingConstraint.active = true
             }
         }
+    }
+    
+    func shake() {
+        let shake = CABasicAnimation(keyPath: "position")
+        shake.duration = 0.1
+        shake.repeatCount = 1
+        shake.autoreverses = true
+        shake.fromValue = NSValue(CGPoint: CGPoint(x: view.center.x - 6, y: view.center.y))
+        shake.toValue = NSValue(CGPoint: CGPoint(x: view.center.x + 6, y: view.center.y))
+        view.layer.addAnimation(shake, forKey: "position")
     }
     
     private func setupAppearance() {
