@@ -35,7 +35,7 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        setup(childViewControllers: viewControllers)
+        setupChildViewControllers(viewControllers)
         
         let leftEdgeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(UniversalPagingController.userSwipedFromEdge(_:)))
         leftEdgeGestureRecognizer.edges = .Left
@@ -46,8 +46,6 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
         rightEdgeGestureRecognizer.edges = .Right
         rightEdgeGestureRecognizer.delegate = self
         self.view.addGestureRecognizer(rightEdgeGestureRecognizer)
-        
-        setupAppearance()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -99,27 +97,13 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
     func userSwipedFromEdge(sender: UIScreenEdgePanGestureRecognizer) {
         if sender.edges == UIRectEdge.Left && sender.state == .Ended {
             if visibleViewControllerIndex > 0 {
-                let visibleViewControllerIndexBeforeTransition = visibleViewControllerIndex
-                let visibleViewControllerIndexAfterTransition = visibleViewControllerIndex - 1
-                viewControllers[visibleViewControllerIndexBeforeTransition].beginAppearanceTransition(false, animated: true)
-                viewControllers[visibleViewControllerIndexAfterTransition].beginAppearanceTransition(true, animated: true)
-                scrollView.setContentOffset(CGPoint(x: containerView.frame.size.width * CGFloat(visibleViewControllerIndexAfterTransition), y: 0), animated: true)
-                viewControllers[visibleViewControllerIndexAfterTransition].endAppearanceTransition()
-                viewControllers[visibleViewControllerIndexBeforeTransition].endAppearanceTransition()
-                visibleViewControllerIndex = visibleViewControllerIndexAfterTransition
+                scrollItemsForward(false)
             } else {
                 shake()
             }
         } else if sender.edges == UIRectEdge.Right && sender.state == .Ended {
             if visibleViewControllerIndex+1 < viewControllers.count {
-                let visibleViewControllerIndexBeforeTransition = visibleViewControllerIndex
-                let visibleViewControllerIndexAfterTransition = visibleViewControllerIndex + 1
-                viewControllers[visibleViewControllerIndexBeforeTransition].beginAppearanceTransition(false, animated: true)
-                viewControllers[visibleViewControllerIndexAfterTransition].beginAppearanceTransition(true, animated: true)
-                scrollView.setContentOffset(CGPoint(x: containerView.frame.size.width * CGFloat(visibleViewControllerIndexAfterTransition), y: 0), animated: true)
-                viewControllers[visibleViewControllerIndexAfterTransition].endAppearanceTransition()
-                viewControllers[visibleViewControllerIndexBeforeTransition].endAppearanceTransition()
-                visibleViewControllerIndex = visibleViewControllerIndexAfterTransition
+                scrollItemsForward(true)
             } else {
                 shake()
             }
@@ -127,7 +111,7 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     // MARK: - Private
-    private func setup(childViewControllers viewControllers: [UIViewController]) {
+    private func setupChildViewControllers(viewControllers: [UIViewController]) {
         for (index, viewController) in viewControllers.enumerate() {
             addChildViewController(viewController)
             scrollView.addSubview(viewController.view)
@@ -222,6 +206,17 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
+    private func scrollItemsForward(forward: Bool) {
+        let visibleViewControllerIndexBeforeTransition = visibleViewControllerIndex
+        let visibleViewControllerIndexAfterTransition = forward ? visibleViewControllerIndex + 1 : visibleViewControllerIndex - 1
+        viewControllers[visibleViewControllerIndexBeforeTransition].beginAppearanceTransition(false, animated: true)
+        viewControllers[visibleViewControllerIndexAfterTransition].beginAppearanceTransition(true, animated: true)
+        scrollView.setContentOffset(CGPoint(x: containerView.frame.size.width * CGFloat(visibleViewControllerIndexAfterTransition), y: 0), animated: true)
+        viewControllers[visibleViewControllerIndexAfterTransition].endAppearanceTransition()
+        viewControllers[visibleViewControllerIndexBeforeTransition].endAppearanceTransition()
+        visibleViewControllerIndex = visibleViewControllerIndexAfterTransition
+    }
+    
     func shake() {
         let shake = CABasicAnimation(keyPath: "position")
         shake.duration = 0.1
@@ -230,9 +225,5 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
         shake.fromValue = NSValue(CGPoint: CGPoint(x: view.center.x - 6, y: view.center.y))
         shake.toValue = NSValue(CGPoint: CGPoint(x: view.center.x + 6, y: view.center.y))
         view.layer.addAnimation(shake, forKey: "position")
-    }
-    
-    private func setupAppearance() {
-    // Do any aditional ui setup
     }
 }
