@@ -28,17 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         greenViewController.view.backgroundColor = UIColor.greenColor()
         
         // Create universal paging controller with sample view controllers
-        let pagingViewController = UniversalPagingController.createWithViewControllers([redViewController, blueViewController, greenViewController])
+        let pagingViewController = UniversalPagingController(viewControllers: [redViewController, blueViewController, greenViewController])
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let window = appDelegate.window
-        
-        
-        // Check if controller was created
-        if pagingViewController != nil {
-            window?.rootViewController = pagingViewController
-        }
-        
+        window?.rootViewController = pagingViewController
         self.window?.makeKeyAndVisible()
         
         return true

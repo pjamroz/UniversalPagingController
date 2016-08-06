@@ -11,30 +11,36 @@ import UIKit
 class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
-    @IBOutlet private weak var scrollView: UIScrollView!
-    @IBOutlet private weak var containerView: UIView!
-    
-    private var viewControllers: [UIViewController]!
+    private let scrollView: UIScrollView
+    private let containerView: UIView
+    private let viewControllers: [UIViewController]
     private var visibleViewControllerIndex = 0
     
     // MARK: - Life cycle
-    class func create() -> (UniversalPagingController?) {
-        let storyboard = UIStoryboard(name: String(UniversalPagingController), bundle: nil)
-        let instance = storyboard.instantiateViewControllerWithIdentifier(String(UniversalPagingController))
-        return instance as? UniversalPagingController
+    init() {
+        scrollView = UIScrollView()
+        containerView = UIView()
+        viewControllers = [UIViewController]()
+        super.init(nibName: nil, bundle:nil)
     }
     
-    class func createWithViewControllers(viewControllers: [UIViewController]) -> (UniversalPagingController?) {
-        let instance = create()
-        if let _ = instance {
-            instance!.viewControllers = viewControllers
-        }
-        return instance
+    init(viewControllers: [UIViewController]) {
+        scrollView = UIScrollView()
+        containerView = UIView()
+        self.viewControllers = viewControllers
+        super.init(nibName: nil, bundle:nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        scrollView = UIScrollView()
+        containerView = UIView()
+        viewControllers = [UIViewController]()
+        super.init(coder: coder)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        setupAppearance()
         setupChildViewControllers(viewControllers)
         
         let leftEdgeGestureRecognizer = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(UniversalPagingController.userSwipedFromEdge(_:)))
@@ -60,7 +66,7 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        viewControllers[visibleViewControllerIndex].beginAppearanceTransition(true, animated: true)
+        viewControllers[visibleViewControllerIndex].beginAppearanceTransition(false, animated: true)
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -99,18 +105,32 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
             if visibleViewControllerIndex > 0 {
                 scrollItemsForward(false)
             } else {
-                shake()
+                //
             }
         } else if sender.edges == UIRectEdge.Right && sender.state == .Ended {
             if visibleViewControllerIndex+1 < viewControllers.count {
                 scrollItemsForward(true)
             } else {
-                shake()
+                //
             }
         }
     }
     
     // MARK: - Private
+    
+    private func setupAppearance() {
+        view.addSubview(containerView)
+        centerConstraintsForView(containerView)
+        
+        containerView.addSubview(scrollView)
+        centerConstraintsForView(scrollView)
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.bounces = false
+        scrollView.pagingEnabled = true
+        scrollView.scrollEnabled = false
+    }
+    
     private func setupChildViewControllers(viewControllers: [UIViewController]) {
         for (index, viewController) in viewControllers.enumerate() {
             addChildViewController(viewController)
@@ -157,25 +177,7 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
             topConstraint.active = true
             bottomConstraint.active = true
             
-            if viewControllers.count == 1 {
-                let leadingConstraint = NSLayoutConstraint(item: viewController.view,
-                                                           attribute: .Leading,
-                                                           relatedBy: .Equal,
-                                                           toItem: scrollView,
-                                                           attribute: .Leading,
-                                                           multiplier: 1.0,
-                                                           constant: 0.0)
-                let trailingConstraint = NSLayoutConstraint(item: viewController.view,
-                                                            attribute: .Trailing,
-                                                            relatedBy: .Equal,
-                                                            toItem: scrollView,
-                                                            attribute: .Trailing,
-                                                            multiplier: 1.0,
-                                                            constant: 0.0)
-                
-                leadingConstraint.active = true
-                trailingConstraint.active = true
-            } else if index == 0 {
+            if index == 0 {
                 let leadingConstraint = NSLayoutConstraint(item: viewController.view,
                                                            attribute: .Leading,
                                                            relatedBy: .Equal,
@@ -184,7 +186,7 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
                                                            multiplier: 1.0,
                                                            constant: 0.0)
                 leadingConstraint.active = true
-            } else if index > 0 {
+            } else {
                 let leadingConstraint = NSLayoutConstraint(item: viewController.view,
                                                            attribute: .Leading,
                                                            relatedBy: .Equal,
@@ -193,7 +195,9 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
                                                            multiplier: 1.0,
                                                            constant: 0.0)
                 leadingConstraint.active = true
-            } else if index-1 == viewControllers.count && viewControllers.count > 1 {
+            }
+            
+            if index == viewControllers.count-1 {
                 let trailingConstraint = NSLayoutConstraint(item: viewController.view,
                                                             attribute: .Trailing,
                                                             relatedBy: .Equal,
@@ -217,13 +221,44 @@ class UniversalPagingController: UIViewController, UIGestureRecognizerDelegate {
         visibleViewControllerIndex = visibleViewControllerIndexAfterTransition
     }
     
-    func shake() {
-        let shake = CABasicAnimation(keyPath: "position")
-        shake.duration = 0.1
-        shake.repeatCount = 1
-        shake.autoreverses = true
-        shake.fromValue = NSValue(CGPoint: CGPoint(x: view.center.x - 6, y: view.center.y))
-        shake.toValue = NSValue(CGPoint: CGPoint(x: view.center.x + 6, y: view.center.y))
-        view.layer.addAnimation(shake, forKey: "position")
+    private func centerConstraintsForView(view: UIView) {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let topConstraint = NSLayoutConstraint(item: view,
+                                               attribute: .Top,
+                                               relatedBy: .Equal,
+                                               toItem: view.superview,
+                                               attribute: .Top,
+                                               multiplier: 1.0,
+                                               constant: 0.0)
+        
+        let bottomConstraint = NSLayoutConstraint(item: view,
+                                                  attribute: .Bottom,
+                                                  relatedBy: .Equal,
+                                                  toItem: view.superview,
+                                                  attribute: .Bottom,
+                                                  multiplier: 1.0,
+                                                  constant: 0.0)
+        
+        let leadingConstraint = NSLayoutConstraint(item: view,
+                                               attribute: .Leading,
+                                               relatedBy: .Equal,
+                                               toItem: view.superview,
+                                               attribute: .Leading,
+                                               multiplier: 1.0,
+                                               constant: 0.0)
+        
+        let trailingConstraint = NSLayoutConstraint(item: view,
+                                                  attribute: .Trailing,
+                                                  relatedBy: .Equal,
+                                                  toItem: view.superview,
+                                                  attribute: .Trailing,
+                                                  multiplier: 1.0,
+                                                  constant: 0.0)
+        
+        topConstraint.active = true
+        bottomConstraint.active = true
+        leadingConstraint.active = true
+        trailingConstraint.active = true
     }
 }

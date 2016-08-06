@@ -11,7 +11,6 @@
 		68DDFB1C1D44F79000A95EB5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68DDFB1B1D44F79000A95EB5 /* Assets.xcassets */; };
 		68DDFB1F1D44F79000A95EB5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68DDFB1D1D44F79000A95EB5 /* LaunchScreen.storyboard */; };
 		68DDFB271D45010A00A95EB5 /* UniversalPagingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68DDFB261D45010A00A95EB5 /* UniversalPagingController.swift */; };
-		68DDFB291D45030600A95EB5 /* UniversalPagingController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68DDFB281D45030600A95EB5 /* UniversalPagingController.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,7 +20,6 @@
 		68DDFB1E1D44F79000A95EB5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		68DDFB201D44F79000A95EB5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		68DDFB261D45010A00A95EB5 /* UniversalPagingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UniversalPagingController.swift; sourceTree = "<group>"; };
-		68DDFB281D45030600A95EB5 /* UniversalPagingController.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = UniversalPagingController.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +54,6 @@
 			children = (
 				68DDFB141D44F79000A95EB5 /* AppDelegate.swift */,
 				68DDFB261D45010A00A95EB5 /* UniversalPagingController.swift */,
-				68DDFB281D45030600A95EB5 /* UniversalPagingController.storyboard */,
 				68DDFB1B1D44F79000A95EB5 /* Assets.xcassets */,
 				68DDFB1D1D44F79000A95EB5 /* LaunchScreen.storyboard */,
 				68DDFB201D44F79000A95EB5 /* Info.plist */,
@@ -124,7 +121,6 @@
 			files = (
 				68DDFB1F1D44F79000A95EB5 /* LaunchScreen.storyboard in Resources */,
 				68DDFB1C1D44F79000A95EB5 /* Assets.xcassets in Resources */,
-				68DDFB291D45030600A95EB5 /* UniversalPagingController.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
